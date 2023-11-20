@@ -73,12 +73,28 @@ def get_gene_mol_inhibitor(bridgedb_df: pd.DataFrame):
     intermediate_df = pd.concat(results_df_list)
 
     intermediate_df.rename(columns={"transporterID": "target"}, inplace=True)
-    intermediate_df["source_doi"] = intermediate_df["source_doi"].map(
-        lambda x: "doi:" + x, na_action="ignore"
-    )
 
-    target_columns = list(intermediate_df.columns)
-    target_columns.remove("target")
+    if not intermediate_df.empty:
+        intermediate_df["source_doi"] = intermediate_df["source_doi"].map(
+            lambda x: "doi:" + x, na_action="ignore"
+        )
+        target_columns = list(intermediate_df.columns)
+        target_columns.remove("target")
+        intermediate_df = pd.merge(data_df, intermediate_df, how="right", on="target")
+        intermediate_df.drop_duplicates(
+            subset=["identifier"] + target_columns, inplace=True, ignore_index=True
+        )
+        data_df = data_df[~data_df["identifier"].isin(list(intermediate_df["identifier"]))]
+        data_df.drop_duplicates(subset="identifier", inplace=True)
+        data_df = pd.concat(
+            [data_df, intermediate_df[list(data_df.columns)].drop_duplicates()], ignore_index=True
+        )
+        intermediate_df.drop(
+            columns=["identifier", "identifier.source", "target.source"], inplace=True
+        )
+    else:
+        target_columns = list(intermediate_df.columns)
+        data_df = data_df.drop_duplicates(subset="identifier")
 
     # Merge the two DataFrames on the target column
     merged_df = collapse_data_sources(
@@ -90,7 +106,7 @@ def get_gene_mol_inhibitor(bridgedb_df: pd.DataFrame):
         col_name="transporter_inhibitor",
     )
 
-    # Metdata details
+    # Metadata details
     # Get the current date and time
     current_date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     # Calculate the time elapsed
@@ -170,12 +186,28 @@ def get_mol_gene_inhibitor(bridgedb_df: pd.DataFrame):
     intermediate_df = pd.concat(results_df_list)
 
     intermediate_df.rename(columns={"inhibitorInChIKey": "target"}, inplace=True)
-    intermediate_df["source_doi"] = intermediate_df["source_doi"].map(
-        lambda x: "doi:" + x, na_action="ignore"
-    )
 
-    target_columns = list(intermediate_df.columns)
-    target_columns.remove("target")
+    if not intermediate_df.empty:
+        intermediate_df["source_doi"] = intermediate_df["source_doi"].map(
+            lambda x: "doi:" + x, na_action="ignore"
+        )
+        target_columns = list(intermediate_df.columns)
+        target_columns.remove("target")
+        intermediate_df = pd.merge(data_df, intermediate_df, how="right", on="target")
+        intermediate_df.drop_duplicates(
+            subset=["identifier"] + target_columns, inplace=True, ignore_index=True
+        )
+        data_df = data_df[~data_df["identifier"].isin(list(intermediate_df["identifier"]))]
+        data_df.drop_duplicates(subset="identifier", inplace=True)
+        data_df = pd.concat(
+            [data_df, intermediate_df[list(data_df.columns)].drop_duplicates()], ignore_index=True
+        )
+        intermediate_df.drop(
+            columns=["identifier", "identifier.source", "target.source"], inplace=True
+        )
+    else:
+        target_columns = list(intermediate_df.columns)
+        data_df = data_df.drop_duplicates(subset="identifier")
 
     # Merge the two DataFrames on the target column
     merged_df = collapse_data_sources(
