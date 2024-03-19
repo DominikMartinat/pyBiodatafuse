@@ -196,7 +196,7 @@ def get_protein_molecule_screened(bridgedb_df: pd.DataFrame) -> Tuple[pd.DataFra
         )
         # set numerical identifiers to int to kepp output consistency
         merged_df[f"{PUBCHEM}_assays"] = merged_df[f"{PUBCHEM}_assays"].apply(
-            lambda res: int_response_value_types(res, ["pubchem_compound_id"])
+            lambda res: int_response_value_types(res, ["pubchem_compound_id", "pubchem_assay_id"])
         )
     merged_df.reset_index(drop=True, inplace=True)
 
