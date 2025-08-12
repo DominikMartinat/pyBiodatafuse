@@ -6,6 +6,7 @@ import json
 import logging
 import os
 import pickle
+
 from logging import Logger
 
 import networkx as nx
@@ -303,7 +304,8 @@ def add_intact_compound_interactions_subgraph(g, compound_node_label, annot_list
 
         id_a = interaction.get(Cons.INTACT_ID_A)
         id_b = interaction.get(Cons.INTACT_ID_B)
-        if not id_a or not id_b:
+
+        if not isinstance(id_a, str) or not isinstance(id_b, str):
             continue
 
         # Normalize IDs: always strip 'CHEBI:' prefix if present
@@ -1915,7 +1917,7 @@ def add_aopwiki_compound_subgraph(g, compound_node_label, annot_list):
         aop_node_label = mie_node_label = ke_upstream_node_label = ke_downstream_node_label = ao_node_label = None
 
         # Add AOP node
-        if annot.get("aop"):
+        if annot.get("aop") and not pd.isna(annot["aop"]):
             aop_node_label = f"{Cons.AOP_PATHWAY}:{annot['aop']}"
             aop_node_attrs = Cons.AOPWIKI_NODE_ATTRS.copy()
             aop_node_attrs.update({
@@ -1937,7 +1939,7 @@ def add_aopwiki_compound_subgraph(g, compound_node_label, annot_list):
                 )
 
         # Add MIE node
-        if annot.get("MIE"):
+        if annot.get("MIE") and not pd.isna(annot["MIE"]):
             mie_node_label = f"{Cons.MOL_INITIATING_EVENT}:{annot['MIE']}"
             mie_node_attrs = Cons.AOPWIKI_NODE_ATTRS.copy()
             mie_node_attrs.update({
@@ -1960,7 +1962,7 @@ def add_aopwiki_compound_subgraph(g, compound_node_label, annot_list):
                     )
 
         # Add KE upstream node
-        if annot.get("KE_upstream"):
+        if annot.get("KE_upstream") and not pd.isna(annot["KE_upstream"]):
             ke_upstream_node_label = f"{Cons.KEY_EVENT}:{annot['KE_upstream']}"
             ke_upstream_node_attrs = Cons.AOPWIKI_NODE_ATTRS.copy()
             ke_upstream_node_attrs.update({
@@ -1984,7 +1986,7 @@ def add_aopwiki_compound_subgraph(g, compound_node_label, annot_list):
                     )
 
         # Add KE downstream node
-        if annot.get("KE_downstream"):
+        if annot.get("KE_downstream") and not pd.isna(annot["KE_downstream"]):
             ke_downstream_node_label = f"{Cons.KEY_EVENT}:{annot['KE_downstream']}"
             ke_downstream_node_attrs = Cons.AOPWIKI_NODE_ATTRS.copy()
             ke_downstream_node_attrs.update({
@@ -2008,7 +2010,7 @@ def add_aopwiki_compound_subgraph(g, compound_node_label, annot_list):
                     )
 
         # Add AO node
-        if annot.get("ao"):
+        if annot.get("ao") and not pd.isna(annot["ao"]):
             ao_node_label = f"{Cons.ADVERSE_OUTCOME}:{annot['ao']}"
             ao_node_attrs = Cons.AOPWIKI_NODE_ATTRS.copy()
             ao_node_attrs.update({
@@ -2454,7 +2456,6 @@ def _built_compound_based_graph(
     ]  # type: ignore
 
     func_dict = {
-        Cons.MOLMEDB_COMPOUND_PROTEIN_COL: add_molmedb_compound_gene_subgraph,
         Cons.INTACT_COMPOUND_INTERACT_COL: add_intact_compound_interactions_subgraph,
         Cons.KEGG_PATHWAY_COL: add_kegg_compound_pathway_subgraph,
         Cons.MOLMEDB_COMPOUND_PROTEIN_COL: add_molmedb_compound_gene_subgraph,
