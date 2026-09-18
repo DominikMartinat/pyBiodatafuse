@@ -27,7 +27,7 @@ copyright = f"{date.today().year}, Tooba Abbassi-Daloii and Yojana Gadiya"
 author = "Tooba Abbassi-Daloii and Yojana Gadiya"
 
 # The full version, including alpha/beta/rc tags.
-release = "1.2.0"
+release = "1.3.1-dev"
 
 # The short X.Y version.
 parsed_version = re.match(
@@ -228,10 +228,12 @@ texinfo_documents = [
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3", None),
     "pandas": ("https://pandas.pydata.org/docs/", None),
-    "sklearn": ("https://scikit-learn.org/stable/", None),
     "numpy": ("https://numpy.org/doc/stable/", None),
     "scipy": ("https://docs.scipy.org/doc/scipy/", None),
 }
+
+# Timeout for intersphinx to avoid connection issues
+intersphinx_timeout = 10
 
 autoclass_content = "both"
 

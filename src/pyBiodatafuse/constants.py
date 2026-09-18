@@ -2,12 +2,12 @@
 
 """Python constant file."""
 
-
 """
 API endpoints for each data source
 """
 BRIDGEDB_ENDPOINT = "https://webservice.bridgedb.org"
 BGEE_ENDPOINT = "https://www.bgee.org/sparql/"
+COMPOUNDWIKI_ENDPOINT = "https://compoundcloud.wikibase.cloud/query/sparql"
 DISGENET_ENDPOINT = "https://api.disgenet.com/api/v1/gda/summary"
 ENSEMBL_ENDPOINT = "https://rest.ensembl.org"
 INTACT_ENDPOINT = "https://www.ebi.ac.uk/intact"
@@ -31,6 +31,7 @@ All data sources
 """
 BRIDGEDB = "BridgeDB"
 BGEE = "Bgee"
+COMPOUNDWIKI = "CompoundWiki"
 DISGENET = "DISGENET"
 ENSEMBL = "Ensembl"
 INTACT = "IntAct"
@@ -85,6 +86,7 @@ IDENTIFIER_SOURCE_COL = "identifier.source"
 SOURCE_COL = "source"
 
 BGEE_GENE_EXPRESSION_LEVELS_COL = f"{BGEE}_gene_expression_levels"
+COMPOUNDWIKI_COL = f"{COMPOUNDWIKI}_compounds"
 DISGENET_DISEASE_COL = f"{DISGENET}_diseases"
 ENSEMBL_HOMOLOG_COL = f"{ENSEMBL}_homologs"
 INTACT_INTERACT_COL = f"{INTACT}_gene_interactions"
@@ -147,6 +149,7 @@ ADVERSE_OUTCOME = "AO"
 
 # Input type for each data source
 BGEE_GENE_INPUT_ID = ENSEMBL
+COMPOUNDWIKI_COMPOUND_INPUT_ID = PUBCHEM_COMPOUND
 DISGENET_GENE_INPUT_ID = NCBI_GENE
 ENSEMBL_GENE_INPUT_ID = ENSEMBL
 INTACT_GENE_INPUT_ID = ENSEMBL
@@ -235,6 +238,51 @@ ANATOMICAL_ENTITIES_LIST = [
     "respiratory system",
     "skeletal system",
 ]
+
+"""
+CompoundWiki Variables
+"""
+COMPOUNDWIKI_CAS_REGISTRY_NUMBER = "CAS Registry Number"
+COMPOUNDWIKI_CHEBI_ID = "ChEBI ID"
+COMPOUNDWIKI_CHEMBL_ID = "ChEMBL ID"
+COMPOUNDWIKI_COSING_NUMBER = "CosIng number"
+COMPOUNDWIKI_DSSTOX_ID = "DSSTOX compound identifier"
+COMPOUNDWIKI_EC_NUMBER = "EC number"
+COMPOUNDWIKI_ECHA_ID = "ECHA Substance Infocard ID"
+COMPOUNDWIKI_INCHI = "InChI"
+COMPOUNDWIKI_INCHI_KEY = "InChIKey"
+COMPOUNDWIKI_KEGG_ID = "KEGG ID"
+COMPOUNDWIKI_PUBCHEM_ID = "PubChem CID"
+COMPOUNDWIKI_SMILES = "SMILES"
+COMPOUNDWIKI_WIKIDATA_ID = "Wikidata Q identifier"
+COMPOUNDWIKI_FORMULA = "chemical formula"
+COMPOUNDWIKI_INSTANCE = "instance of"
+COMPOUNDWIKI_MASS = "mass"
+COMPOUNDWIKI_METABOLISM_PATHWAY = "xenobiotic metabolism pathway"
+COMPOUNDWIKI_LABEL = "compound label"
+COMPOUNDWIKI_INPUT = "input_identifier"
+
+COMPOUNDWIKI_OUTPUT_DICT = {
+    COMPOUNDWIKI_CAS_REGISTRY_NUMBER: str,
+    COMPOUNDWIKI_CHEBI_ID: str,
+    COMPOUNDWIKI_CHEMBL_ID: str,
+    COMPOUNDWIKI_COSING_NUMBER: str,
+    COMPOUNDWIKI_DSSTOX_ID: str,
+    COMPOUNDWIKI_EC_NUMBER: str,
+    COMPOUNDWIKI_ECHA_ID: str,
+    COMPOUNDWIKI_INCHI: str,
+    COMPOUNDWIKI_INCHI_KEY: str,
+    COMPOUNDWIKI_KEGG_ID: str,
+    COMPOUNDWIKI_PUBCHEM_ID: str,
+    COMPOUNDWIKI_SMILES: str,
+    COMPOUNDWIKI_WIKIDATA_ID: str,
+    COMPOUNDWIKI_FORMULA: str,
+    COMPOUNDWIKI_INSTANCE: str,
+    COMPOUNDWIKI_MASS: str,
+    COMPOUNDWIKI_METABOLISM_PATHWAY: str,
+    COMPOUNDWIKI_LABEL: str,
+    COMPOUNDWIKI_INPUT: str,
+}
 
 """
 DISGENET variables
@@ -669,7 +717,31 @@ KE_UPSTREAM_TITLE = "KE_upstream_title"
 KE_UPSTREAM_ORGAN = "KE_upstream_organ"
 KE_DOWNSTREAM_ORGAN = "KE_downstream_organ"
 PUBCHEM_COMPOUND_AOPWIKI = "pubchem_compound"
+ENSEMBL_AOPWIKI = "Ensembl"
+KE = "ke"
+KE_TITLE = "ke_title"
+KE_ORGAN = "ke_organ"
 
+# Output dict for simple mode (pathway=False)
+AOPWIKI_GENE_OUTPUT_DICT_SIMPLE = {
+    AOP: str,
+    AOP_TITLE: str,
+    KE: str,
+    KE_TITLE: str,
+    KE_ORGAN: str,
+    PUBCHEM_COMPOUND_AOPWIKI: str,
+}
+
+AOPWIKI_COMPOUND_OUTPUT_DICT_SIMPLE = {
+    AOP: str,
+    AOP_TITLE: str,
+    KE: str,
+    KE_TITLE: str,
+    KE_ORGAN: str,
+    ENSEMBL_AOPWIKI: str,
+}
+
+# Output dict for pathway mode (pathway=True)
 AOPWIKI_GENE_OUTPUT_DICT = {
     AOP: str,
     AOP_TITLE: str,
@@ -703,6 +775,7 @@ AOPWIKI_COMPOUND_OUTPUT_DICT = {
     KE_DOWNSTREAM_ORGAN: str,
 }
 
+AOPWIKI_VALUE_CHECK_LIST = [AOP]
 
 # QUERY_PROCESS = os.path.join(os.path.dirname(__file__), "queries", "aopwiki-get-by-biological-process.rq.rq")
 
@@ -735,7 +808,7 @@ Node and edge main lable and attributes
 DATASOURCE = "datasource"
 NAME = ENTITY_NAME
 ID = "id"
-LABEL = "label"
+LABEL = "labels"
 EDGE_HASH = "edge_hash"
 
 # Node types
@@ -754,6 +827,7 @@ MIRNA_NODE_LABEL = "miRNA"
 TRANS_FACTOR_NODE_LABEL = "Transcription Factor"
 MITOCHONDRIAL_PATHWAY_NODE_LABEL = "Mitochondrial Pathway"
 KEY_EVENT_NODE_LABEL = "Key Event"
+KEY_EVENT_RELATIONSHIP_NODE_LABEL = "Key Event Relationship"
 MIE_NODE_LABEL = "Molecular Initiating Event"
 AOP_NODE_LABEL = "Adverse Outcome Pathway"
 AO_NODE_LABEL = "Adverse Outcome"
@@ -769,6 +843,12 @@ INHIBITS = "INHIBITS"
 EXPRESSED_BY = "EXPRESSED_BY"
 UPSTREAM_OF = "UPSTREAM_OF"
 DOWNSTREAM_OF = "DOWNSTREAM_OF"
+HAS_KEY_EVENT = "HAS_KEY_EVENT"
+HAS_ADVERSE_OUTCOME = "HAS_ADVERSE_OUTCOME"
+HAS_MOLECULAR_INITIATING_EVENT = "HAS_MOLECULAR_INITIATING_EVENT"
+HAS_KEY_EVENT_RELATIONSHIP = "HAS_KEY_EVENT_RELATIONSHIP"
+HAS_UPSTREAM_KEY_EVENT = "HAS_UPSTREAM_KEY_EVENT"
+HAS_DOWNSTREAM_KEY_EVENT = "HAS_DOWNSTREAM_KEY_EVENT"
 
 """
 Anatomical entity nodes and edges
@@ -982,6 +1062,12 @@ MITOCART_NODE_ATTRS = {
 
 MITOCART_GENE_PATHWAY_EDGE_LABEL = "encodes_mitochondrial_protein"
 
+MOLMEDB_GENE_INHIBITS_EDGE_LABEL = "inhibits"
+MOLMEDB_GENE_INHIBITS_EDGE_ATTRS = {
+    DATASOURCE: MOLMEDB,
+    LABEL: MOLMEDB_GENE_INHIBITS_EDGE_LABEL,
+}
+
 """
 Compound nodes and edges
 """
@@ -1029,7 +1115,7 @@ MOLMEDB_COMPOUND_NODE_ATTRS = {
 MOLMEDB_COMPOUND_PROTEIN_EDGE_LABEL = "inhibits"
 MOLMEDB_PROTEIN_COMPOUND_EDGE_ATTRS = {
     DATASOURCE: MOLMEDB,
-    LABEL: MOLMEDB_COMPOUND_PROTEIN_EDGE_LABEL
+    LABEL: MOLMEDB_COMPOUND_PROTEIN_EDGE_LABEL,
 }
 
 # Opentargets
@@ -1050,6 +1136,14 @@ OPENTARGETS_COMPOUND_NODE_ATTRS = {
     LABEL: COMPOUND_NODE_LABEL,
 }
 OPENTARGETS_GENE_COMPOUND_EDGE_ATTRS = {DATASOURCE: OPENTARGETS, LABEL: None, ID: None}
+
+# CompoundWiki
+COMPOUNDWIKI_COMPOUND_NODE_ATTRS = {
+    DATASOURCE: COMPOUNDWIKI,
+    NAME: None,
+    ID: None,
+    LABEL: COMPOUND_NODE_LABEL,
+}
 
 """
 Side effect nodes and edges
@@ -1196,7 +1290,10 @@ KE_UPSTREAM_MIE_EDGE_LABEL = "upstream_of"  # KE upstream to MIE edge
 KEY_EVENT_DOWNSTREAM_NODE_MAIN_LABEL = "KE_downstream"
 KE_DOWNSTREAM_KE_EDGE_LABEL = "downstream_of"  # KE downstream to KE upstream edge
 AO_NODE_MAIN_LABEL = "ao"
-AO_KE_EDGE_LABEL = "associated_with"  # KE downstream to AO edge
+AO_KE_EDGE_LABEL = "has_adverse_outcome"  # AOP to AO edge
+# Simple mode (pathway=False)
+KEY_EVENT_NODE_MAIN_LABEL = "ke"  # Simple KE from pathway=False mode
+AOP_KE_EDGE_LABEL = "has_key_event"  # AOP to KE edge (simple mode)
 
 AOPWIKI_EDGE_ATTRS = {
     DATASOURCE: AOPWIKIRDF,
@@ -1267,6 +1364,126 @@ RDF variables
 # Mapper from namespace to BridgeDB datasource
 COMPOUND_NAMESPACE_MAPPER = {"pubchem.compound": "PubChem Compound", "CHEMBL": "ChEMBL compound"}
 
+# Mapper from BridgeDB datasource names to bioregistry-compatible prefixes
+# This is needed because bioregistry doesn't recognize BridgeDB's naming conventions
+BRIDGEDB_TO_BIOREGISTRY = {
+    "Uniprot-TrEMBL": "uniprot",
+    "Uniprot-SwissProt": "uniprot",
+    "NCBI Gene": "ncbigene",
+    "Ensembl": "ensembl",
+    "HGNC": "hgnc",
+    "HGNC Accession Number": "hgnc",
+    "PubChem Compound": "pubchem.compound",
+    "ChEMBL compound": "chembl.compound",
+    "ChEBI": "chebi",
+    "HMDB": "hmdb",
+    "DrugBank": "drugbank",
+    "KEGG Compound": "kegg.compound",
+    "KEGG Drug": "kegg.drug",
+    "InChIKey": "inchikey",
+    "CAS": "cas",
+    "Gene Ontology": "go",
+    "RefSeq": "refseq",
+    "PDB": "pdb",
+    "Pfam": "pfam",
+    "MGI": "mgi",
+    "RGD": "rgd",
+    "SGD": "sgd",
+    "OMIM": "omim",
+    "Wikidata": "wikidata",
+    "Wikipedia": "wikipedia.en",
+    "LIPID MAPS": "lipidmaps",
+    "SwissLipids": "slm",
+}
+
+# Input datasources for BridgeDB
+BRIDGEDB_ENSEMBL = ("Ensembl",)
+BRIDGEDB_NCBI_GENE = ("NCBI Gene",)
+BRIDGEDB_HGNC = ("HGNC",)
+BRIDGEDB_HGNC_ACCESSION_NUMBER = ("HGNC Accession Number",)
+BRIDGEDB_MGI = ("MGI",)
+BRIDGEDB_MIRBASE_MATURE_SEQUENCE = ("miRBase mature sequence",)
+BRIDGEDB_MIRBASE_SEQUENCE = ("miRBase Sequence",)
+BRIDGEDB_OMIM = ("OMIM",)
+BRIDGEDB_REFSEQ = ("RefSeq",)
+BRIDGEDB_RFAM = ("Rfam",)
+BRIDGEDB_RGD = ("RGD",)
+BRIDGEDB_SGD = ("SGD",)
+BRIDGEDB_UCSC = ("UCSC Genome Browser",)
+BRIDGEDB_NCBI_PROTEIN = ("NCBI Protein",)
+BRIDGEDB_PDB = ("PDB",)
+BRIDGEDB_PFAM = ("Pfam",)
+BRIDGEDB_UNIPROT_TREMBL = ("Uniprot-TrEMBL",)
+BRIDGEDB_UNIPROT_SWISSPROT = ("Uniprot-SwissProt",)
+BRIDGEDB_AFFY = ("Affy",)
+BRIDGEDB_AGILENT = ("Agilent",)
+BRIDGEDB_ILLUMINA = ("Illumina",)
+BRIDGEDB_GENE_ONTOLOGY = ("Gene Ontology",)
+BRIDGEDB_CAS = ("CAS",)
+BRIDGEDB_CHEBI = ("ChEBI",)
+BRIDGEDB_CHEMSPIDER = ("ChemSpider",)
+BRIDGEDB_CHEMBL_COMPOUND = ("ChEMBL compound",)
+BRIDGEDB_DRUGBANK = ("DrugBank",)
+BRIDGEDB_HMDB = ("HMDB",)
+BRIDGEDB_GUIDE_TO_PHARMACOLOGY = ("Guide to Pharmacology Ligand ID",)
+BRIDGEDB_INCHIKEY = ("InChIKey",)
+BRIDGEDB_KEGG_COMPOUND = ("KEGG Compound",)
+BRIDGEDB_KEGG_DRUG = ("KEGG Drug",)
+BRIDGEDB_KEGG_GLYCAN = ("KEGG Glycan",)
+BRIDGEDB_LIPID_MAPS = ("LIPID MAPS",)
+BRIDGEDB_LIPIDBANK = ("LipidBank",)
+BRIDGEDB_PHARMAGKB_DRUG = ("PharmGKB Drug",)
+BRIDGEDB_PUBCHEM_COMPOUND = ("PubChem Compound",)
+BRIDGEDB_PUBCHEM_SUBSTANCE = ("PubChem Substance",)
+BRIDGEDB_SWISSLIPIDS = ("SwissLipids",)
+BRIDGEDB_TTD_DRUG = ("TTD Drug",)
+BRIDGEDB_WIKIDATA = ("Wikidata",)
+BRIDGEDB_WIKIPEDIA = ("Wikipedia",)
+
+BRIDGEDB_INPUT_DICT = {
+    BRIDGEDB_ENSEMBL: str,
+    BRIDGEDB_NCBI_GENE: str,
+    BRIDGEDB_HGNC: str,
+    BRIDGEDB_HGNC_ACCESSION_NUMBER: str,
+    BRIDGEDB_MGI: str,
+    BRIDGEDB_MIRBASE_MATURE_SEQUENCE: str,
+    BRIDGEDB_MIRBASE_SEQUENCE: str,
+    BRIDGEDB_OMIM: str,
+    BRIDGEDB_REFSEQ: str,
+    BRIDGEDB_RFAM: str,
+    BRIDGEDB_RGD: str,
+    BRIDGEDB_SGD: str,
+    BRIDGEDB_UCSC: str,
+    BRIDGEDB_NCBI_PROTEIN: str,
+    BRIDGEDB_PDB: str,
+    BRIDGEDB_PFAM: str,
+    BRIDGEDB_UNIPROT_TREMBL: str,
+    BRIDGEDB_UNIPROT_SWISSPROT: str,
+    BRIDGEDB_AFFY: str,
+    BRIDGEDB_AGILENT: str,
+    BRIDGEDB_ILLUMINA: str,
+    BRIDGEDB_GENE_ONTOLOGY: str,
+    BRIDGEDB_CAS: str,
+    BRIDGEDB_CHEBI: str,
+    BRIDGEDB_CHEMSPIDER: str,
+    BRIDGEDB_CHEMBL_COMPOUND: str,
+    BRIDGEDB_DRUGBANK: str,
+    BRIDGEDB_HMDB: str,
+    BRIDGEDB_GUIDE_TO_PHARMACOLOGY: str,
+    BRIDGEDB_INCHIKEY: str,
+    BRIDGEDB_KEGG_COMPOUND: str,
+    BRIDGEDB_KEGG_DRUG: str,
+    BRIDGEDB_KEGG_GLYCAN: str,
+    BRIDGEDB_LIPID_MAPS: str,
+    BRIDGEDB_LIPIDBANK: str,
+    BRIDGEDB_PHARMAGKB_DRUG: str,
+    BRIDGEDB_PUBCHEM_COMPOUND: str,
+    BRIDGEDB_PUBCHEM_SUBSTANCE: str,
+    BRIDGEDB_SWISSLIPIDS: str,
+    BRIDGEDB_TTD_DRUG: str,
+    BRIDGEDB_WIKIDATA: str,
+    BRIDGEDB_WIKIPEDIA: str,
+}
 
 DATA_TYPES_SOURCES = {
     "identifier": IDENTIFIER_COL,
@@ -1287,11 +1504,14 @@ DATA_TYPES_SOURCES = {
 
 NODE_URI_PREFIXES = {
     ENSEMBL: "https://identifiers.org/ensembl#",
+    "Entrez Gene": "https://identifiers.org/ncbigene/",
     "medgen": "https://www.ncbi.nlm.nih.gov/medgen/",
     "pubchem_assay": "https://pubchem.ncbi.nlm.nih.gov/bioassay/",
     PUBCHEM: "https://pubchem.ncbi.nlm.nih.gov/compound/",
     MOLMEDB: "https://molmedb.upol.cz/mol/",
     "uniprot": "https://www.uniprot.org/uniprotkb/",
+    UNIPROT_TREMBL: "https://www.uniprot.org/uniprotkb/",
+    "Uniprot-SwissProt": "https://www.uniprot.org/uniprotkb/",
     "pubmed": "https://pubmed.ncbi.nlm.nih.gov/",
     WIKIPATHWAYS: "https://www.wikipathways.org/pathways/",
     REACTOME: "https://reactome.org/content/detail/",
@@ -1316,6 +1536,15 @@ NAMESPACE_BINDINGS = {
     "mondo": "https://monarchinitiative.org/disease/",
     "umls": "https://www.ncbi.nlm.nih.gov/medgen/",
     "so": "http://purl.obolibrary.org/obo/so#",
+    "cheminf": "http://semanticscience.org/resource/",
+    # WikiPathways vocabulary (http version used in pathway.py)
+    "wp": "http://vocabularies.wikipathways.org/wp#",
+    # WikiPathways vocabulary (https version used in NODE_TYPES interaction)
+    "wps": "https://vocabularies.wikipathways.org/wp#",
+    # AOP-Wiki ontology
+    "aopo": "http://aopkb.org/aop_ontology#",
+    # ChEBI properties (under OBO)
+    "chebi": "http://purl.obolibrary.org/obo/chebi/",
 }
 
 # Patterns URIs for nodes (one for each node in the schema)
@@ -1339,11 +1568,11 @@ NODE_TYPES = {
     "disease_node": f"{NAMESPACE_BINDINGS['obo']}NCIT_C7057",
     "gene_disease_association": f"{NAMESPACE_BINDINGS['sio']}SIO_000983",
     "score_node": f"{NAMESPACE_BINDINGS['obo']}NCIT_C25338",
-    "data_source_node": "http://semanticscience.org/resource/SIO_000750",
+    # Data source types - use DCAT/VOID Dataset (aligned with dataset_provenance.py)
+    "data_source_node": f"{NAMESPACE_BINDINGS['dcat']}Dataset",
     "gene_expression_value_node": f"{NAMESPACE_BINDINGS['sio']}SIO_001077",
     "anatomical_entity_node": "http://semanticscience.org/resource/SIO_001262",
     "tested_compound_node": "http://semanticscience.org/resource/SIO_010038",
-    "source_database": f"{NAMESPACE_BINDINGS['sio']}SIO_000750",
     "experimental_process_node": "http://www.ebi.ac.uk/efo/EFO_0002694",
     "pathway_node": f"{NAMESPACE_BINDINGS['obo']}PW_0000001",
     "adverse_event_node": f"{NAMESPACE_BINDINGS['obo']}OAE_0000001",
@@ -1358,6 +1587,7 @@ NODE_TYPES = {
     "developmental_stage_node": f"{NAMESPACE_BINDINGS['obo']}NCIT_C43531",
     "el_node": "https://biodatafuse.org/onto/bdf#DisGeNET_Evidence_Level",
     "ei_node": "https://biodatafuse.org/onto/bdf#DisGeNET_Evidence_Index",
+    "aop": "http://aopkb.org/aop_ontology#AOP",
     "ao": "http://aopkb.org/aop_ontology#AdverseOutcome",
     "ke": "http://aopkb.org/aop_ontology#KeyEvent",
     "mie": "http://aopkb.org/aop_ontology#MolecularInitiatingEvent",
@@ -1375,6 +1605,8 @@ PREDICATES = {
     "sio_has_value": f"{NAMESPACE_BINDINGS['sio']}SIO_000300",
     "sio_has_input": f"{NAMESPACE_BINDINGS['sio']}SIO_000230",
     "sio_has_output": f"{NAMESPACE_BINDINGS['sio']}SIO_000229",
+    "sio_is_subject_of": f"{NAMESPACE_BINDINGS['sio']}SIO_000629",
+    "dc_identifier": "http://purl.org/dc/elements/1.1/identifier",
     "chebi_inchi": f"{NAMESPACE_BINDINGS['obo']}chebi/inchi",
     "chebi_smiles": f"{NAMESPACE_BINDINGS['obo']}chebi/smiles",
     "cheminf_compound_id": "http://semanticscience.org/resource/CHEMINF_000140",
@@ -1388,9 +1620,15 @@ PREDICATES = {
     "translation_of": f"{NAMESPACE_BINDINGS['obo']}so#translation_of",
     "translates_to": f"{NAMESPACE_BINDINGS['obo']}so#translates_to",
     "variant_of": f"{NAMESPACE_BINDINGS['obo']}so#variant_of",
-    "has_upstreamkey_event": "http://aopkb.org/aop_ontology#has_upstream_key_event",
-    "has_downstreamkey_event": "http://aopkb.org/aop_ontology#has_downstream_key_event",
+    "has_upstream_key_event": "http://aopkb.org/aop_ontology#has_upstream_key_event",
+    "has_downstream_key_event": "http://aopkb.org/aop_ontology#has_downstream_key_event",
+    "has_key_event": "http://aopkb.org/aop_ontology#has_key_event",
+    "has_key_event_relationship": "http://aopkb.org/aop_ontology#has_key_event_relationship",
+    "has_adverse_outcome": "http://aopkb.org/aop_ontology#has_adverse_outcome",
+    "has_molecular_initiating_event": "http://aopkb.org/aop_ontology#has_molecular_initiating_event",
+    "organ_context": "http://aopkb.org/aop_ontology#OrganContext",
     "occurs_in": f"{NAMESPACE_BINDINGS['obo']}BFO_0000066",
+    "molecular_formula": f"{NAMESPACE_BINDINGS['sio']}CHEMINF_000042",
 }
 
 # Classes for clinical phases
@@ -1516,3 +1754,225 @@ SOURCE_NAMESPACES = {
     "Minerva": "https://minerva-net.lcsb.uni.lu/",
     # TODO ADD ALL
 }
+
+# =============================================================================
+# Dataset Provenance and Versioning
+# =============================================================================
+
+# PROV-O (Provenance Ontology) namespace and predicates
+PROV_NAMESPACE = "http://www.w3.org/ns/prov#"
+PROV_PREDICATES = {
+    "was_derived_from": f"{PROV_NAMESPACE}wasDerivedFrom",
+    "was_generated_by": f"{PROV_NAMESPACE}wasGeneratedBy",
+    "was_attributed_to": f"{PROV_NAMESPACE}wasAttributedTo",
+    "used": f"{PROV_NAMESPACE}used",
+    "generated_at_time": f"{PROV_NAMESPACE}generatedAtTime",
+    "started_at_time": f"{PROV_NAMESPACE}startedAtTime",
+    "ended_at_time": f"{PROV_NAMESPACE}endedAtTime",
+    "at_location": f"{PROV_NAMESPACE}atLocation",
+}
+PROV_TYPES = {
+    "entity": f"{PROV_NAMESPACE}Entity",
+    "activity": f"{PROV_NAMESPACE}Activity",
+    "agent": f"{PROV_NAMESPACE}Agent",
+    "software_agent": f"{PROV_NAMESPACE}SoftwareAgent",
+}
+
+# DCAT (Data Catalog Vocabulary) namespace and predicates
+DCAT_NAMESPACE = "http://www.w3.org/ns/dcat#"
+DCAT_PREDICATES = {
+    "distribution": f"{DCAT_NAMESPACE}distribution",
+    "access_url": f"{DCAT_NAMESPACE}accessURL",
+    "download_url": f"{DCAT_NAMESPACE}downloadURL",
+    "media_type": f"{DCAT_NAMESPACE}mediaType",
+    "landing_page": f"{DCAT_NAMESPACE}landingPage",
+    "serves_dataset": f"{DCAT_NAMESPACE}servesDataset",
+    "endpoint_url": f"{DCAT_NAMESPACE}endpointURL",
+}
+DCAT_TYPES = {
+    "dataset": f"{DCAT_NAMESPACE}Dataset",
+    "distribution": f"{DCAT_NAMESPACE}Distribution",
+    "data_service": f"{DCAT_NAMESPACE}DataService",
+    "catalog": f"{DCAT_NAMESPACE}Catalog",
+}
+
+# Dublin Core Terms namespace and predicates
+DCTERMS_NAMESPACE = "http://purl.org/dc/terms/"
+DCTERMS_PREDICATES = {
+    "title": f"{DCTERMS_NAMESPACE}title",
+    "description": f"{DCTERMS_NAMESPACE}description",
+    "creator": f"{DCTERMS_NAMESPACE}creator",
+    "publisher": f"{DCTERMS_NAMESPACE}publisher",
+    "issued": f"{DCTERMS_NAMESPACE}issued",
+    "modified": f"{DCTERMS_NAMESPACE}modified",
+    "version": f"{DCTERMS_NAMESPACE}hasVersion",
+    "identifier": f"{DCTERMS_NAMESPACE}identifier",
+    "source": f"{DCTERMS_NAMESPACE}source",
+    "license": f"{DCTERMS_NAMESPACE}license",
+    "access_rights": f"{DCTERMS_NAMESPACE}accessRights",
+}
+
+# PAV (Provenance, Authoring and Versioning) namespace
+PAV_NAMESPACE = "http://purl.org/pav/"
+PAV_PREDICATES = {
+    "version": f"{PAV_NAMESPACE}version",
+    "created_on": f"{PAV_NAMESPACE}createdOn",
+    "retrieved_from": f"{PAV_NAMESPACE}retrievedFrom",
+    "retrieved_on": f"{PAV_NAMESPACE}retrievedOn",
+    "imported_from": f"{PAV_NAMESPACE}importedFrom",
+    "imported_on": f"{PAV_NAMESPACE}importedOn",
+}
+
+# Schema.org predicates for web services
+SCHEMA_NAMESPACE = "https://schema.org/"
+SCHEMA_PREDICATES = {
+    "provider": f"{SCHEMA_NAMESPACE}provider",
+    "version": f"{SCHEMA_NAMESPACE}version",
+    "date_modified": f"{SCHEMA_NAMESPACE}dateModified",
+    "url": f"{SCHEMA_NAMESPACE}url",
+    "name": f"{SCHEMA_NAMESPACE}name",
+}
+SCHEMA_TYPES = {
+    "web_api": f"{SCHEMA_NAMESPACE}WebAPI",
+    "dataset": f"{SCHEMA_NAMESPACE}Dataset",
+    "organization": f"{SCHEMA_NAMESPACE}Organization",
+    "software_application": f"{SCHEMA_NAMESPACE}SoftwareApplication",
+    "person": f"{SCHEMA_NAMESPACE}Person",
+}
+
+# FOAF (Friend of a Friend) namespace
+FOAF_NAMESPACE = "http://xmlns.com/foaf/0.1/"
+FOAF_PREDICATES = {
+    "name": f"{FOAF_NAMESPACE}name",
+    "homepage": f"{FOAF_NAMESPACE}homepage",
+    "mbox": f"{FOAF_NAMESPACE}mbox",
+}
+FOAF_TYPES = {
+    "person": f"{FOAF_NAMESPACE}Person",
+    "agent": f"{FOAF_NAMESPACE}Agent",
+}
+
+# VoID (Vocabulary of Interlinked Datasets) namespace
+VOID_NAMESPACE = "http://rdfs.org/ns/void#"
+VOID_PREDICATES = {
+    "sparql_endpoint": f"{VOID_NAMESPACE}sparqlEndpoint",
+    "data_dump": f"{VOID_NAMESPACE}dataDump",
+    "triples": f"{VOID_NAMESPACE}triples",
+    "vocabulary": f"{VOID_NAMESPACE}vocabulary",
+    "subset": f"{VOID_NAMESPACE}subset",
+}
+VOID_TYPES = {
+    "dataset": f"{VOID_NAMESPACE}Dataset",
+    "linkset": f"{VOID_NAMESPACE}Linkset",
+}
+
+# Data source URIs for provenance tracking (use identifiers.org where possible)
+DATA_SOURCE_IDENTIFIERS = {
+    BGEE: "https://identifiers.org/bgee",
+    BRIDGEDB: "https://identifiers.org/bridgedb",
+    COMPOUNDWIKI: "https://compoundcloud.wikibase.cloud/",
+    DISGENET: "https://identifiers.org/disgenet",
+    ENSEMBL: "https://identifiers.org/ensembl",
+    INTACT: "https://identifiers.org/intact",
+    KEGG: "https://identifiers.org/kegg",
+    MINERVA: "https://minerva-net.lcsb.uni.lu/",
+    MOLMEDB: "https://molmedb.upol.cz/",
+    OPENTARGETS: "https://platform.opentargets.org/",
+    PUBCHEM: "https://identifiers.org/pubchem.compound",
+    STRING: "https://identifiers.org/string",
+    WIKIDATA: "https://www.wikidata.org/",
+    WIKIPATHWAYS: "https://identifiers.org/wikipathways",
+    AOPWIKIRDF: "https://aopwiki.rdf.bigcat-bioinformatics.org/",
+    TFLINK: "https://tflink.net/",
+    MITOCARTA: "https://www.broadinstitute.org/mitocarta/",
+}
+
+# Data source SPARQL endpoints (where applicable)
+DATA_SOURCE_SPARQL_ENDPOINTS = {
+    BGEE: BGEE_ENDPOINT,
+    COMPOUNDWIKI: COMPOUNDWIKI_ENDPOINT,
+    WIKIDATA: WIKIDATA_ENDPOINT,
+    WIKIPATHWAYS: WIKIPATHWAYS_ENDPOINT,
+    AOPWIKIRDF: AOPWIKI_ENDPOINT,
+    MOLMEDB: MOLMEDB_ENDPOINT,
+    PUBCHEM: PUBCHEM_ENDPOINT,
+}
+
+# Data source API endpoints (REST/GraphQL)
+# These are used for dataset provenance in RDF generation
+DATA_SOURCE_API_ENDPOINTS = {
+    BGEE: BGEE_ENDPOINT,
+    BRIDGEDB: BRIDGEDB_ENDPOINT,
+    COMPOUNDWIKI: COMPOUNDWIKI_ENDPOINT,
+    DISGENET: DISGENET_ENDPOINT,
+    ENSEMBL: ENSEMBL_ENDPOINT,
+    INTACT: INTACT_ENDPOINT,
+    KEGG: KEGG_ENDPOINT,
+    MINERVA: MINERVA_ENDPOINT,
+    MOLMEDB: MOLMEDB_ENDPOINT,
+    OPENTARGETS: OPENTARGETS_ENDPOINT,
+    PUBCHEM: PUBCHEM_ENDPOINT,
+    STRING: STRING_ENDPOINT,
+    WIKIDATA: WIKIDATA_ENDPOINT,
+    WIKIPATHWAYS: WIKIPATHWAYS_ENDPOINT,
+    AOPWIKIRDF: AOPWIKI_ENDPOINT,
+}
+
+# Data source license URLs
+DATA_SOURCE_LICENSES = {
+    BGEE: "https://creativecommons.org/publicdomain/zero/1.0/",
+    COMPOUNDWIKI: "https://creativecommons.org/publicdomain/zero/1.0/",
+    DISGENET: "https://www.disgenet.org/legal",
+    INTACT: "https://creativecommons.org/publicdomain/zero/1.0/",
+    OPENTARGETS: "https://creativecommons.org/licenses/by/4.0/",
+    PUBCHEM: "https://www.ncbi.nlm.nih.gov/home/about/policies/",
+    STRING: "https://creativecommons.org/licenses/by/4.0/",
+    WIKIDATA: "https://creativecommons.org/publicdomain/zero/1.0/",
+    WIKIPATHWAYS: "https://creativecommons.org/publicdomain/zero/1.0/",
+    AOPWIKIRDF: "https://creativecommons.org/licenses/by/4.0/",
+}
+
+# Mapping from processing function names to data sources
+PROCESS_FUNCTION_TO_DATASOURCE = {
+    "process_ppi_data": STRING,
+    "process_disease_data": [DISGENET, OPENTARGETS],
+    "process_expression_data": BGEE,
+    "process_pathways": [WIKIPATHWAYS, MINERVA, OPENTARGETS],
+    "process_processes_data": OPENTARGETS,
+    "process_compound_data": OPENTARGETS,
+    "process_literature_data": PUBCHEM,
+    "process_transporter_inhibitor_data": MOLMEDB,
+    "process_inhibitor_transporter_data": MOLMEDB,
+    "process_aop_data": AOPWIKIRDF,
+    "process_molecular_pathway": WIKIPATHWAYS,
+    "process_compoundwiki_data": COMPOUNDWIKI,
+}
+
+# Mapping from data columns to their primary data source
+# Used for linking RDF nodes to their source datasets
+COLUMN_TO_DATASOURCE = {
+    BGEE_GENE_EXPRESSION_LEVELS_COL: BGEE,
+    COMPOUNDWIKI_COL: COMPOUNDWIKI,
+    DISGENET_DISEASE_COL: DISGENET,
+    INTACT_INTERACT_COL: INTACT,
+    INTACT_COMPOUND_INTERACT_COL: INTACT,
+    KEGG_PATHWAY_COL: KEGG,
+    KEGG_COMPOUND_COL: KEGG,
+    MINERVA_PATHWAY_COL: MINERVA,
+    MOLMEDB_PROTEIN_COMPOUND_COL: MOLMEDB,
+    MOLMEDB_COMPOUND_PROTEIN_COL: MOLMEDB,
+    OPENTARGETS_DISEASE_COL: OPENTARGETS,
+    OPENTARGETS_GO_COL: OPENTARGETS,
+    OPENTARGETS_GENE_COMPOUND_COL: OPENTARGETS,
+    OPENTARGETS_REACTOME_COL: OPENTARGETS,
+    PUBCHEM_COMPOUND_ASSAYS_COL: PUBCHEM,
+    STRING_INTERACT_COL: STRING,
+    WIKIDATA_CC_COL: WIKIDATA,
+    WIKIPATHWAYS_MOLECULAR_COL: WIKIPATHWAYS,
+    WIKIPATHWAYS_PATHWAY_COL: WIKIPATHWAYS,
+    AOPWIKI_GENE_COL: AOPWIKIRDF,
+    AOPWIKI_COMPOUND_COL: AOPWIKIRDF,
+}
+
+# RDF predicate for linking data nodes to their source dataset
+SOURCE_DATASET_PREDICATE = f"{PAV_NAMESPACE}importedFrom"
